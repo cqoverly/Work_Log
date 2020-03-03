@@ -5,6 +5,11 @@ from PySide2 import QtWidgets as qtw
 from PySide2 import QtCore as qtc
 from PySide2 import QtGui as qtg
 
+
+import work_log as wl
+
+TOPICS = wl.get_topic_dict()
+
 class MainWindow(qtw.QMainWindow):
 
     def __init__(self, *args, **kwargs):
@@ -47,12 +52,14 @@ class MainManager(qtw.QWidget):
 
 
 class EntryReaderWidget(qtw.QTabWidget):
+    # Tab for viewing log list and reading a selected log entry
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         pass
 
 
 class WLEntryWidget(qtw.QTabWidget):
+    # Tab for adding a new entry to the log
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -67,19 +74,42 @@ class WLEntryWidget(qtw.QTabWidget):
         save_button.setFixedWidth(150)
         clear_button.setFixedWidth(150)
         clear_button.clicked.connect(self.clear_entry)
+        save_button.clicked.connect(self.save_entry)
+        self.select_topic_combo = TopicListWidget()
+
 
         button_layout = qtw.QHBoxLayout()
         button_layout.addWidget(clear_button)
         button_layout.addWidget(save_button)
 
+        textbox_layout = qtw.QHBoxLayout()
+        textbox_layout.setAlignment(qtc.Qt.AlignTop)
+        textbox_layout.addWidget(self.select_topic_combo)
+        textbox_layout.addWidget(self.entry_texbox)
         entry_layout.addLayout(button_layout)
-        entry_layout.addWidget(self.entry_texbox)
+        entry_layout.addLayout(textbox_layout)
+
 
         self.setLayout(entry_layout)
 
+    def clear_entry(self):
+        self.entry_texbox.clear()
 
-def clear_entry(self):
-    self.entry_textbox.clear()
+    def get_topics(self):
+        print('getting topics')
+
+    def save_entry(self):
+        index = TOPICS[self.select_topic_combo.currentText()]
+        text = self.entry_texbox.toPlainText()
+        wl.add_log_entry(index, text)
+
+
+class TopicListWidget(qtw.QComboBox):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)   
+        self.topics_dict = TOPICS
+        self.addItems(self.topics_dict.keys())
+        self.setFixedWidth(200)
 
 
 

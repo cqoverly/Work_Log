@@ -3,6 +3,12 @@
 import os
 
 import pyodbc
+from PySide2 import QtWidgets as qtw
+from PySide2 import QtCore as qtc
+from PySide2 import QtGui as qtg
+
+import work_log
+
 
 DRIVER = '{ODBC Driver 17 for SQL Server}'
 SERVER = 'MSI'
@@ -57,7 +63,7 @@ def add_log_entry(entry_topic, entry_text):
 def create_entry():
     topic_dict = get_topic_dict()
     for d, i in topic_dict.items():
-        print(f'{i}: {d} {type(i)}')
+        print(f'{d}: {i} {type(i)}')
     topic = 0
     while int(topic) not in topic_dict.values():
         topic = input('Enter the number for the topic you would like to use: ')
