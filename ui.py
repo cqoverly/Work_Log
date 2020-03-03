@@ -66,6 +66,7 @@ class WLEntryWidget(qtw.QTabWidget):
         self.entry_texbox.setAlignment(qtc.Qt.AlignLeft)
         save_button.setFixedWidth(150)
         clear_button.setFixedWidth(150)
+        clear_button.clicked.connect(self.clear_entry)
 
         button_layout = qtw.QHBoxLayout()
         button_layout.addWidget(clear_button)
@@ -77,7 +78,8 @@ class WLEntryWidget(qtw.QTabWidget):
         self.setLayout(entry_layout)
 
 
-
+def clear_entry(self):
+    self.entry_textbox.clear()
 
 
 
